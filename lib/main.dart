@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kdeccourse/AppColor.dart';
 import 'package:kdeccourse/CourseDetail.dart';
+import 'package:kdeccourse/ProfileScreen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -13,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'KDEC Courses',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: AppColor.PRIMARY,
+        accentColor: AppColor.SECONDARY
       ),
       home: MyHomePage(title: 'Courses'),
     );
@@ -30,9 +36,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> dummy  = ["التلمذه","شخصية الله", "سلطان الله ومسئولية الإنسان","الإنسان","الروح القدس","الإختبار المسيحي للنصرة"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
+        ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -41,34 +53,46 @@ class _MyHomePageState extends State<MyHomePage> {
                 Stack(
                   children: <Widget>[
                     Container(
-                      height: MediaQuery.of(context).size.width / 2.5,
+                      height: MediaQuery.of(context).size.width / 4,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(20),
                               bottomLeft: Radius.circular(20)),
-                          color: Colors.blue),
+                          color: AppColor.PRIMARY),
                     ),
                     Positioned(
                       bottom: 20,
-                      right: 30,
-                      left: 30,
+
                       child: Container(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            suffixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            labelText: 'Search',
-                          ),
+                        height: 45,
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+
+                          children: [
+                            SizedBox(width: 10,),
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  suffixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  labelText: 'Search',
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10,),
+                            CircleAvatar(backgroundColor:Colors.white,child: IconButton(onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen())), icon: Icon(Icons.person,color: AppColor.SECONDARY,))),
+                            SizedBox(width: 10,),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 10),
-                Padding(
+            /*    Padding(
                   padding: const EdgeInsets.all(26.0),
                   child: Align(
                       alignment: Alignment.centerLeft,
@@ -77,14 +101,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600),
                       )),
-                ),
+                ),*/
                 GridView.builder(
-
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail())),
+                  itemBuilder: (context, index) {
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(11) * 10;
+                    return GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail(courseName: dummy[index],image: "images/img_$index.png"))),
                     child: Column(
                       children: [
                         Expanded(
@@ -95,10 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: Container(
                                     width: 300,
                                     height: 500,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey,
-                                    ),
+                                  child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag: "images/img_$index.png",child: Image.asset("images/img_$index.png",fit: BoxFit.cover,))),
                                   ),
                               ),
                               Positioned(
@@ -108,15 +131,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 top: 0,
                                 child: CircularPercentIndicator(
                                  radius: 45,
-                                  percent: 0.100,
-                                  center: new Text("10%",style: TextStyle(fontSize:10),),
-                                  progressColor: Colors.red,
+                                  percent: randomNumber / 100,
+                               //   center: new Text(randomNumber.toString(),style: TextStyle(fontSize:10,color: Colors.black,fontWeight: FontWeight.bold),),
+                                  progressColor: AppColor.SECONDARY,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Text("Course Name"),
+                        Text(dummy[index]),
                         SizedBox(height: 5,),
                        /* Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -129,8 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),*/
                       ],
                     ),
-                  ),
-                  itemCount: 10,
+                  );},
+                  itemCount: dummy.length,
                   scrollDirection: Axis.vertical,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

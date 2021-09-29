@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kdeccourse/AppColor.dart';
 
 class CourseDetail extends StatelessWidget {
+  final String courseName;
+  final String image;
+  static const List<String> dummy = [" ابعاد العلاقة مع الله", "طبيعة مدرسة المسيح","تابع طبيعة مدرسة المسيح","مبادئ التلمذة: المواظبة والإنتماء","مبادئ التلمذة: الإنضباط","مبادئ التلمذة: الوداعة"];
+  const CourseDetail({Key? key, required this.courseName, required this.image}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          toolbarHeight:30,
           elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
           backgroundColor: Colors.transparent,
           leading: IconButton(
               icon: Icon(
@@ -22,13 +30,10 @@ class CourseDetail extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                      width: 300,
-                      height: 300,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey)),
+                      width: 400,
+                      height: 200,child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag:image,child: Image.asset(image,fit: BoxFit.cover,)))),
                   SizedBox(height: 10),
-                  Text("Course Name",
+                  Text(courseName,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                   SizedBox(height: 10),
@@ -38,10 +43,9 @@ class CourseDetail extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600))),
                   SizedBox(height: 10),
-                  const Text(
-                      "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "),
+                  const Text("في هذا البرنامج نعرض منهاج دراسي متكامل للتلمذة الروحية في الحياة المسيحية مع الله وهو عبارة عن مجموعة من الدراسات الاساسية المتسلسلة والمتدرجة التي تخاطب أرواحنا وأذهاننا"),
                   SizedBox(height: 10),
-                  Row(children: [Icon(Icons.video_call), Text("16 hours")]),
+                  Row(children: [Icon(Icons.video_call,color: AppColor.SECONDARY,), Text("16 hours",)]),
                   SizedBox(height: 10),
                   /* Row(children: [Icon(Icons.video_call), Text("16 hours")]),
               Row(children: [Icon(Icons.video_call), Text("16 hours")]),*/
@@ -57,11 +61,11 @@ class CourseDetail extends StatelessWidget {
                       itemBuilder: (context, index) => Card(
                             elevation: 2,
                             child: ListTile(
-                                title: Text("Introduction"),
-                                subtitle: Text("02:07 mins"),
-                                trailing: Icon(Icons.play_circle_fill)),
+                                title: Text(dummy[index]),
+                                subtitle: Text("30:57 mins"),
+                                trailing: Icon(Icons.play_circle_fill,color: AppColor.SECONDARY)),
                           ),
-                      itemCount: 10),
+                      itemCount: dummy.length),
                 ],
               ),
             ),
