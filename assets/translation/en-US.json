@@ -1,0 +1,23 @@
+{
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "noEmail": "Don't have an account? Click here",
+  "guest": "Continue as a guest",
+  "notifications": "Notifications",
+  "notificationLogin": "Please login to see your notifications",
+  "offline": "Offline",
+  "prayer": "Prayer Request",
+  "name": "Name",
+  "phone": "Phone",
+  "signup": "Signup",
+  "send": "Send",
+  "donate": "Donate",
+  "prayerMsg": "Send your prayer requests here",
+  "language": "Language",
+  "profile" : "Profile",
+  "changeEmail": "Change Email",
+  "changePass": "Change Password",
+  "logout": "Logout",
+  "search": "search"
+}

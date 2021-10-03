@@ -1,26 +1,38 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kdeccourse/AppColor.dart';
+import 'package:kdeccourse/CategoryWidget.dart';
 import 'package:kdeccourse/CourseDetail.dart';
 import 'package:kdeccourse/ProfileScreen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+        supportedLocales: [Locale('en', 'US'), Locale('ar', 'AR')],
+        path:
+            'assets/translation', // <-- change the path of the translation files
+        fallbackLocale: Locale('ar', 'AR'),
+        child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       title: 'KDEC Courses',
       theme: ThemeData(
-        primaryColor: AppColor.PRIMARY,
-        accentColor: AppColor.SECONDARY
-      ),
+          primaryColor: AppColor.PRIMARY, accentColor: AppColor.SECONDARY),
       home: MyHomePage(title: 'Courses'),
     );
   }
@@ -36,62 +48,84 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> dummy  = ["التلمذه","شخصية الله", "سلطان الله ومسئولية الإنسان","الإنسان","الروح القدس","الإختبار المسيحي للنصرة"];
+
+  List<String> dummy = [
+    "التلمذه",
+    "شخصية الله",
+    "سلطان الله ومسئولية الإنسان",
+    "الإنسان",
+    "الروح القدس",
+    "الإختبار المسيحي للنصرة"
+  ];
   @override
   Widget build(BuildContext context) {
+    context.setLocale( Locale('ar', 'AR'));
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          elevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
-        ),
+      appBar: AppBar(
+        toolbarHeight: 0,
+        elevation: 0,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
+      ),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.width / 4,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(20),
-                              bottomLeft: Radius.circular(20)),
-                          color: AppColor.PRIMARY),
-                    ),
-                    Positioned(
-                      bottom: 20,
-
-                      child: Container(
-                        height: 45,
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-
-                          children: [
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  suffixIcon: Icon(Icons.search),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  labelText: 'Search',
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            CircleAvatar(backgroundColor:Colors.white,child: IconButton(onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen())), icon: Icon(Icons.person,color: AppColor.SECONDARY,))),
-                            SizedBox(width: 10,),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+        child: SingleChildScrollView(
+          child: Column(children: [
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.width / 4,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20)),
+                      color: AppColor.PRIMARY),
                 ),
-                SizedBox(height: 10),
+                Positioned(
+                  bottom: 20,
+                  child: Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              labelText: 'search'.tr(),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileScreen())),
+                                icon: Icon(
+                                  Icons.person,
+                                  color: AppColor.SECONDARY,
+                                ))),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
             /*    Padding(
                   padding: const EdgeInsets.all(26.0),
                   child: Align(
@@ -102,7 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontSize: 24, fontWeight: FontWeight.w600),
                       )),
                 ),*/
-                GridView.builder(
+            CategoryWidget(title: "اجزاء مدرسه المسيح"),
+            CategoryWidget(title: "أساسيات الإيمان المسيحي"),
+            CategoryWidget(title: "أمثال ومعجزات المسيح"),
+            CategoryWidget(title: "أسئلة صعبة CONFLICT"),
+
+            /*  GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
@@ -113,35 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail(courseName: dummy[index],image: "images/img_$index.png"))),
                     child: Column(
                       children: [
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                    width: 300,
-                                    height: 500,
-                                  child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag: "images/img_$index.png",child: Image.asset("images/img_$index.png",fit: BoxFit.cover,))),
-                                  ),
-                              ),
-                              Positioned(
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                top: 0,
-                                child: CircularPercentIndicator(
-                                 radius: 45,
-                                  percent: randomNumber / 100,
-                               //   center: new Text(randomNumber.toString(),style: TextStyle(fontSize:10,color: Colors.black,fontWeight: FontWeight.bold),),
-                                  progressColor: AppColor.SECONDARY,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+
                         Text(dummy[index]),
                         SizedBox(height: 5,),
-                       /* Padding(
+                       */ /* Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: LinearPercentIndicator(
                             lineHeight:10,
@@ -149,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             center: new Text("10%",style: TextStyle(fontSize:10),),
                             progressColor: Colors.red,
                           ),
-                        ),*/
+                        ),*/ /*
                       ],
                     ),
                   );},
@@ -159,9 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisCount: 2,
                     childAspectRatio: (1 / 1.2)),
                 ),
-              ],
-            ),
-          ),
+              ],*/
+          ]),
         ),
       ),
     );
