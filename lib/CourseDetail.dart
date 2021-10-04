@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kdeccourse/AppColor.dart';
+import 'dart:math' as math;
 
 class CourseDetail extends StatelessWidget {
   final String courseName;
@@ -10,6 +11,8 @@ class CourseDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){},child: Transform( alignment: Alignment.center,
+          transform: Matrix4.rotationY(math.pi),child: Icon(Icons.help,size: 50))),
         appBar: AppBar(
           toolbarHeight:30,
           elevation: 0,

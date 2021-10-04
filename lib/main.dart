@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chewie/chewie.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:kdeccourse/CourseDetail.dart';
 import 'package:kdeccourse/ProfileScreen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:video_player/video_player.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +50,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final videoPlayerController = VideoPlayerController.asset('assets/intro.mp4');
+
 
   List<String> dummy = [
     "التلمذه",
@@ -57,9 +61,29 @@ class _MyHomePageState extends State<MyHomePage> {
     "الروح القدس",
     "الإختبار المسيحي للنصرة"
   ];
+
+  @override
+  void initState() {
+    initilizeVideo();
+  }
+
+  Future<void> initilizeVideo() async {
+    await videoPlayerController.initialize();
+  }
   @override
   Widget build(BuildContext context) {
-    context.setLocale( Locale('ar', 'AR'));
+    // context.setLocale( Locale('ar', 'AR'));
+    final chewieController = ChewieController(
+      aspectRatio: 1,
+      videoPlayerController: videoPlayerController,
+      autoInitialize: true,
+      autoPlay: true,
+      allowMuting: true,
+      allowFullScreen: false,
+      showControls: false,
+      looping: true,
+    );
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -70,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(children: [
+
             Stack(
               children: <Widget>[
                 Container(
@@ -136,10 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontSize: 24, fontWeight: FontWeight.w600),
                       )),
                 ),*/
-            CategoryWidget(title: "اجزاء مدرسه المسيح"),
-            CategoryWidget(title: "أساسيات الإيمان المسيحي"),
-            CategoryWidget(title: "أمثال ومعجزات المسيح"),
-            CategoryWidget(title: "أسئلة صعبة CONFLICT"),
+            Container(height:250,child: Chewie(controller: chewieController)),
+            CategoryWidget(title: "اجزاء مدرسه المسيح",dummy: dummy),
+            CategoryWidget(title: "أساسيات الإيمان المسيحي",dummy: dummy),
+            CategoryWidget(title: "أمثال ومعجزات المسيح",dummy: dummy),
+            CategoryWidget(title: "أسئلة صعبة CONFLICT",dummy: dummy),
 
             /*  GridView.builder(
                   shrinkWrap: true,
