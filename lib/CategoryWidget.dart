@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kdeccourse/CourseDetail.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'AppColor.dart';
@@ -39,6 +40,7 @@ class CategoryWidget extends StatelessWidget {
     "نقاء القلب"
   ];
   const CategoryWidget({Key? key, required this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,6 +56,7 @@ class CategoryWidget extends StatelessWidget {
          ),
 
         Expanded(
+
           child: ListView.builder(itemBuilder: (context, index) => Column(
               children: [
                 Expanded(
@@ -82,9 +85,8 @@ class CategoryWidget extends StatelessWidget {
                 ),*/
               ],
             ),scrollDirection: Axis.horizontal,itemCount: dummy2.length,shrinkWrap: true,),
-        ),
-        Divider(thickness: 2,)
-      ]),
+
+        )]),
     );
   }
 
