@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kdeccourse/AppColor.dart';
 import 'package:kdeccourse/CategoryWidget.dart';
-import 'package:kdeccourse/CourseDetail.dart';
 import 'package:kdeccourse/ProfileScreen.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +54,39 @@ class _MyHomePageState extends State<MyHomePage> {
     "الإنسان",
     "الروح القدس",
     "الإختبار المسيحي للنصرة"
+  ];
+  List<String> dummy2 = [
+    " إختيار شريك الحياة",
+    " العلاقات الإنسانية",
+    " أنواع الصلاة",
+    " شخصية الإنسان",
+    " مبادئ العلاقات الإنسانية",
+    "العلاقات الزوجية",
+    " الإختبار المسيحي (لا انا بل المسيح)",
+    "الإيمان",
+    "التسبيح",
+    "التلمذة",
+    "الرجاء",
+    "الروح القدس",
+    "التلمذة",
+    "الرجاء",
+    "الشركة مع الله",
+    "الشكر",
+    "الصراع الروحي",
+    "الطلب والتضرع",
+    "الكنيسة (العلاقة مع الجسد)",
+    "المأمورية العظمى ",
+    "المحبة",
+    "المشاركة",
+    "تربية الأطفال",
+    "دراسة الكلمة المقدسة",
+    "سلطان الله ومسؤلية الإنسان",
+    "شخصية الله ",
+    "شخصية المسيح",
+    "شفاء النفس",
+    "مبادئ العلاقة مع الله",
+    "مقدمة الخلوة الشخصية",
+    "نقاء القلب"
   ];
   @override
   Widget build(BuildContext context) {

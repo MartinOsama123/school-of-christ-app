@@ -5,7 +5,39 @@ import 'AppColor.dart';
 
 class CategoryWidget extends StatelessWidget {
   final String title;
-
+  static List<String> dummy2 = [
+    " إختيار شريك الحياة",
+    " العلاقات الإنسانية",
+    " أنواع الصلاة",
+    " شخصية الإنسان",
+    " مبادئ العلاقات الإنسانية",
+    "العلاقات الزوجية",
+    " الإختبار المسيحي (لا انا بل المسيح)",
+    "الإيمان",
+    "التسبيح",
+    "التلمذة",
+    "الرجاء",
+    "الروح القدس",
+    "التلمذة",
+    "الرجاء",
+    "الشركة مع الله",
+    "الشكر",
+    "الصراع الروحي",
+    "الطلب والتضرع",
+    "الكنيسة (العلاقة مع الجسد)",
+    "المأمورية العظمى ",
+    "المحبة",
+    "المشاركة",
+    "تربية الأطفال",
+    "دراسة الكلمة المقدسة",
+    "سلطان الله ومسؤلية الإنسان",
+    "شخصية الله ",
+    "شخصية المسيح",
+    "شفاء النفس",
+    "مبادئ العلاقة مع الله",
+    "مقدمة الخلوة الشخصية",
+    "نقاء القلب"
+  ];
   const CategoryWidget({Key? key, required this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -22,17 +54,21 @@ class CategoryWidget extends StatelessWidget {
          ),
 
         Expanded(
-          child: ListView.builder(itemBuilder: (context, index) => Stack(
+          child: ListView.builder(itemBuilder: (context, index) => Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Container(
-                    width: 250,
-                    height: 300,
-                    child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag: "images/img_$index.png",child: Image.asset("images/img_$index.png",fit: BoxFit.cover,))),
+                Expanded(
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag: "images/${dummy2[index].trim()}.jpg",child: Image.asset("images/${dummy2[index].trim()}.jpg",fit: BoxFit.fill,))),
+                    ),
                   ),
                 ),
-                Positioned(
+               Text(dummy2[index].trim())
+               /* Positioned(
                   left: 0,
                   right: 0,
                   bottom: 0,
@@ -43,9 +79,9 @@ class CategoryWidget extends StatelessWidget {
                     //   center: new Text(randomNumber.toString(),style: TextStyle(fontSize:10,color: Colors.black,fontWeight: FontWeight.bold),),
                     progressColor: AppColor.SECONDARY,
                   ),
-                ),
+                ),*/
               ],
-            ),scrollDirection: Axis.horizontal,itemCount: 5,shrinkWrap: true,),
+            ),scrollDirection: Axis.horizontal,itemCount: dummy2.length,shrinkWrap: true,),
         ),
         Divider(thickness: 2,)
       ]),
