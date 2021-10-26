@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kdeccourse/AppColor.dart';
+import 'package:kdeccourse/BackendQueries.dart';
+import 'package:kdeccourse/models/Category.dart';
 import 'dart:math' as math;
+import 'package:easy_localization/easy_localization.dart';
+import 'package:kdeccourse/models/CourseInfo.dart';
 
 class CourseDetail extends StatelessWidget {
-  final String courseName;
-  final String image;
-  static const List<String> dummy = [" ابعاد العلاقة مع الله", "طبيعة مدرسة المسيح","تابع طبيعة مدرسة المسيح","مبادئ التلمذة: المواظبة والإنتماء","مبادئ التلمذة: الإنضباط","مبادئ التلمذة: الوداعة"];
-  const CourseDetail({Key? key, required this.courseName, required this.image}) : super(key: key);
+  final Category category;
+
+  const CourseDetail({Key? key, required this.category}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,51 +30,46 @@ class CourseDetail extends StatelessWidget {
           automaticallyImplyLeading: true,
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(26.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                      width: 400,
-                      height: 200,child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag:image,child: Image.asset(image,fit: BoxFit.cover,)))),
-                  SizedBox(height: 10),
-                  Text(courseName,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-                  SizedBox(height: 10),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text("About the course",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600))),
-                  SizedBox(height: 10),
-                  const Text("في هذا البرنامج نعرض منهاج دراسي متكامل للتلمذة الروحية في الحياة المسيحية مع الله وهو عبارة عن مجموعة من الدراسات الاساسية المتسلسلة والمتدرجة التي تخاطب أرواحنا وأذهاننا"),
-                  SizedBox(height: 10),
-                  Row(children: [Icon(Icons.video_call,color: AppColor.SECONDARY,), Text("16 hours",)]),
-                  SizedBox(height: 10),
-                  /* Row(children: [Icon(Icons.video_call), Text("16 hours")]),
-              Row(children: [Icon(Icons.video_call), Text("16 hours")]),*/
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text("Curriculum",
-                          style: TextStyle(
-                              fontSize: 19, fontWeight: FontWeight.w600))),
-                  SizedBox(height: 10),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => Card(
-                            elevation: 2,
-                            child: ListTile(
-                                title: Text(dummy[index]),
-                                subtitle: Text("30:57 mins"),
-                                trailing: Icon(Icons.play_circle_fill,color: AppColor.SECONDARY)),
-                          ),
-                      itemCount: dummy.length),
-                ],
+          child: FutureBuilder<List<CourseInfo>>(
+            future: BackendQueries.getAllCourses(category.categoryName),
+            builder: (context, coursesData) =>  coursesData.hasData ? Padding(
+              padding: const EdgeInsets.all(26.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 400,
+                        height: 200,child: ClipRRect(borderRadius: BorderRadius.circular(8),child: Hero(tag:"${category.categoryName}.jpg",child: Image.asset("images/${category.categoryName}.jpg",fit: BoxFit.cover)))),
+                    SizedBox(height: 10),
+                    Center(child: Text(category.categoryName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
+                    SizedBox(height: 10),
+                     Text("about".tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    SizedBox(height: 10),
+                    Text(category.categoryDescription),
+                    SizedBox(height: 10),
+                    // Row(children: [Icon(Icons.video_call,color: AppColor.SECONDARY,), Text("16 hours",)]),
+                    SizedBox(height: 10),
+                    /* Row(children: [Icon(Icons.video_call), Text("16 hours")]),
+                Row(children: [Icon(Icons.video_call), Text("16 hours")]),*/
+                      Text("curriculum".tr(),
+                            style: TextStyle(
+                                fontSize: 19, fontWeight: FontWeight.w600)),
+                    SizedBox(height: 10),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => Card(
+                              elevation: 2,
+                              child: ListTile(
+                                  title: Text(coursesData.data![index].courseName),
+                                  trailing: Icon(Icons.play_circle_fill,color: AppColor.SECONDARY)),
+                            ),
+                        itemCount: coursesData.data!.length),
+                  ],
+                ),
               ),
-            ),
+            ) : Center(child: CircularProgressIndicator(),),
           ),
         ));
   }

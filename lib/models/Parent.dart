@@ -1,16 +1,16 @@
 class Parent {
-  late String name;
+  late String parentName;
 
-  Parent(this.name);
+  Parent(this.parentName);
 
   Parent.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+    parentName = json['parentName'];
 
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    data['parentName'] = this.parentName;
     return data;
   }
 }

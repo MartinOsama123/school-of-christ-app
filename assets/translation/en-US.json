@@ -19,5 +19,7 @@
   "changeEmail": "Change Email",
   "changePass": "Change Password",
   "logout": "Logout",
-  "search": "search"
+  "search": "search",
+  "about": "About the course",
+  "curriculum": "Curriculum"
 }

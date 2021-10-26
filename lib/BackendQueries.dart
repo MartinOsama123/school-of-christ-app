@@ -5,10 +5,10 @@ import 'package:kdeccourse/models/CourseInfo.dart';
 import 'package:kdeccourse/models/Parent.dart';
 
 class BackendQueries {
-  static const BASE_URL = "https://kdechurch.herokuapp.com";
+  static const BASE_URL = "https://kdec-course.herokuapp.com";
   static const IMG_URL = "$BASE_URL/api/img/";
 
-  static Future<List<CourseInfo>> getCategoriesInfo(String name) async {
+  static Future<List<CourseInfo>> getAllCourses(String name) async {
     var response = await http.get(Uri.parse("$BASE_URL/api/course/$name"));
 
 
@@ -25,15 +25,37 @@ class BackendQueries {
     }
     return list;
   }
-
-  static Future<Category> getAllCategories(String parent) async {
+  static Future<List<Category>> getAllCategories(String parent) async {
     var response = await http.get(Uri.parse("$BASE_URL/api/category/$parent"));
-    return Category.fromJson(
-        jsonDecode(Utf8Decoder().convert(response.bodyBytes)));
+
+    List<Category> list = <Category>[];
+    if (response.statusCode == 200) {
+      try {
+        var albums = jsonDecode(Utf8Decoder().convert(response.bodyBytes));
+        for (var a in albums) {
+          list.add(Category.fromJson(a));
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+    return list;
   }
-  static Future<Parent> getAllParents() async {
+  static Future<List<Parent>> getAllParents() async {
     var response = await http.get(Uri.parse("$BASE_URL/api/parent/all"));
-    return Parent.fromJson(
-        jsonDecode(Utf8Decoder().convert(response.bodyBytes)));
+
+    List<Parent> list = <Parent>[];
+    if (response.statusCode == 200) {
+      try {
+        var albums = jsonDecode(Utf8Decoder().convert(response.bodyBytes));
+        for (var a in albums) {
+          list.add(Parent.fromJson(a));
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+    print(list);
+    return list;
   }
 }

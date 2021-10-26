@@ -5,12 +5,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kdeccourse/AppColor.dart';
+import 'package:kdeccourse/BackendQueries.dart';
 import 'package:kdeccourse/CategoryWidget.dart';
 import 'package:kdeccourse/ProfileScreen.dart';
 
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
+
+import 'models/Parent.dart';
 
 
 Future<void> main() async {
@@ -108,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // context.setLocale( Locale('ar', 'AR'));
+     context.setLocale( Locale('ar', 'AR'));
     final chewieController = ChewieController(
       aspectRatio: 1,
       videoPlayerController: videoPlayerController,
@@ -128,116 +131,77 @@ class _MyHomePageState extends State<MyHomePage> {
             SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child:  SingleChildScrollView(
           child: Column(children: [
-
-            Stack(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.width / 4,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20)),
-                      color: AppColor.PRIMARY),
-                ),
-                Positioned(
-                  bottom: 20,
-                  child: Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              suffixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              labelText: 'search'.tr(),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.width / 4,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20)),
+                        color: AppColor.PRIMARY),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    child: Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                labelText: 'search'.tr(),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: IconButton(
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfileScreen())),
-                                icon: Icon(
-                                  Icons.person,
-                                  color: AppColor.SECONDARY,
-                                ))),
-                        SizedBox(
-                          width: 10,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 10,
+                          ),
+                          CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProfileScreen())),
+                                  icon: Icon(
+                                    Icons.person,
+                                    color: AppColor.SECONDARY,
+                                  ))),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            /*    Padding(
-                  padding: const EdgeInsets.all(26.0),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Popular Courses",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                      )),
-                ),*/
-            Container(height:250,child: Chewie(controller: chewieController)),
-            CategoryWidget(title: "اجزاء مدرسه المسيح"),
-            CategoryWidget(title: "أساسيات الإيمان المسيحي"),
-            CategoryWidget(title: "أمثال ومعجزات المسيح"),
-            CategoryWidget(title: "أسئلة صعبة CONFLICT"),
+                ],
+              ),
 
-            /*  GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(8),
-                  itemBuilder: (context, index) {
-                    Random random = new Random();
-                    int randomNumber = random.nextInt(11) * 10;
-                    return GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail(courseName: dummy[index],image: "images/img_$index.png"))),
-                    child: Column(
-                      children: [
+              Container(height:250,child: Chewie(controller: chewieController)),
+              FutureBuilder<List<Parent>>(
+                future: BackendQueries.getAllParents(),
+                  builder: (context, snapshot) => snapshot.hasData && snapshot.connectionState == ConnectionState.done?
+                  Center(
+                    child: ListView.builder(itemCount: snapshot.data!.length,shrinkWrap:true,physics: const NeverScrollableScrollPhysics(),itemBuilder: (context, index) =>
+                          CategoryWidget(title: snapshot.data![index].parentName)),
+                  ): Center(child: CircularProgressIndicator(),),
 
-                        Text(dummy[index]),
-                        SizedBox(height: 5,),
-                       */ /* Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: LinearPercentIndicator(
-                            lineHeight:10,
-                            percent: 0.100,
-                            center: new Text("10%",style: TextStyle(fontSize:10),),
-                            progressColor: Colors.red,
-                          ),
-                        ),*/ /*
-                      ],
-                    ),
-                  );},
-                  itemCount: dummy.length,
-                  scrollDirection: Axis.vertical,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    childAspectRatio: (1 / 1.2)),
-                ),
-              ],*/
-          ]),
+              ),
+            ]),
         ),
+
       ),
     );
   }
