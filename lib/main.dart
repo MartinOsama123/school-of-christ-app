@@ -56,53 +56,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final videoPlayerController = VideoPlayerController.asset('assets/intro.mp4');
 
-
-  List<String> dummy = [
-    "التلمذه",
-    "شخصية الله",
-    "سلطان الله ومسئولية الإنسان",
-    "الإنسان",
-    "الروح القدس",
-    "الإختبار المسيحي للنصرة"
-  ];
-
-  List<String> dummy2 = [
-    " إختيار شريك الحياة",
-    " العلاقات الإنسانية",
-    " أنواع الصلاة",
-    " شخصية الإنسان",
-    " مبادئ العلاقات الإنسانية",
-    "العلاقات الزوجية",
-    " الإختبار المسيحي (لا انا بل المسيح)",
-    "الإيمان",
-    "التسبيح",
-    "التلمذة",
-    "الرجاء",
-    "الروح القدس",
-    "التلمذة",
-    "الرجاء",
-    "الشركة مع الله",
-    "الشكر",
-    "الصراع الروحي",
-    "الطلب والتضرع",
-    "الكنيسة (العلاقة مع الجسد)",
-    "المأمورية العظمى ",
-    "المحبة",
-    "المشاركة",
-    "تربية الأطفال",
-    "دراسة الكلمة المقدسة",
-    "سلطان الله ومسؤلية الإنسان",
-    "شخصية الله ",
-    "شخصية المسيح",
-    "شفاء النفس",
-    "مبادئ العلاقة مع الله",
-    "مقدمة الخلوة الشخصية",
-    "نقاء القلب"
-  ];
-
   @override
   void initState() {
     initilizeVideo();
+  }
+
+
+  @override
+  Future<void> dispose() async {
+    super.dispose();
+  await videoPlayerController.dispose();
+
   }
 
   Future<void> initilizeVideo() async {
@@ -120,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       allowMuting: true,
       allowFullScreen: false,
       showControls: false,
-      looping: true,
+      looping: false,
     );
 
     return Scaffold(
@@ -189,7 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
 
-              Container(height:250,child: Chewie(controller: chewieController)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(height:250,child: Chewie(controller: chewieController)),
+              ),
               FutureBuilder<List<Parent>>(
                 future: BackendQueries.getAllParents(),
                   builder: (context, snapshot) => snapshot.hasData && snapshot.connectionState == ConnectionState.done?
