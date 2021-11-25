@@ -1,20 +1,11 @@
-import 'dart:math';
 
-import 'package:chewie/chewie.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:kdeccourse/AppColor.dart';
-import 'package:kdeccourse/BackendQueries.dart';
-import 'package:kdeccourse/CategoryWidget.dart';
-import 'package:kdeccourse/ProfileScreen.dart';
+import 'package:kdeccourse/app_colors.dart';
+import 'package:kdeccourse/category_detail.dart';
+import 'package:kdeccourse/profile_screen.dart';
 
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:video_player/video_player.dart';
-
-import 'models/Parent.dart';
-
+import 'models/parent_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +29,9 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       title: 'KDEC Courses',
       theme: ThemeData(
-          primaryColor: AppColor.PRIMARY, accentColor: AppColor.SECONDARY),
+          primaryColor: AppColor.PRIMARY,
+          accentColor: AppColor.SECONDARY,
+          fontFamily: "EgyMotion"),
       home: MyHomePage(title: 'Courses'),
     );
   }
@@ -54,122 +47,116 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final videoPlayerController = VideoPlayerController.asset('assets/intro.mp4');
-
-  @override
-  void initState() {
-    initilizeVideo();
-  }
-
-
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-  await videoPlayerController.dispose();
-
-  }
-
-  Future<void> initilizeVideo() async {
-    await videoPlayerController.initialize();
-  }
-
+  final imagesName = [
+    "أجزاء مدرسة المسيح",
+    "أسئلة صعبة CONFLICT",
+    "أساسيات الإيمان المسيحي",
+    "أمثال ومُعجزات المسيح",
+    "حياه الخادم"
+  ];
   @override
   Widget build(BuildContext context) {
-     context.setLocale( Locale('ar', 'AR'));
-    final chewieController = ChewieController(
-      aspectRatio: 1,
-      videoPlayerController: videoPlayerController,
-      autoInitialize: true,
-      autoPlay: true,
-      allowMuting: true,
-      allowFullScreen: false,
-      showControls: false,
-      looping: false,
-    );
+    context.setLocale(Locale('ar', 'AR'));
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        elevation: 0,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
-      ),
-      body: SafeArea(
-        child:  SingleChildScrollView(
-          child: Column(children: [
-              Stack(
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.width / 4,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(20)),
-                        color: AppColor.PRIMARY),
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    child: Container(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                suffixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                labelText: 'search'.tr(),
+      body: CustomScrollView(slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Column(children: [
+                Stack(
+                  children: <Widget>[
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(0),
+                        child: Image.asset(
+                          "images/cover.jpg",
+                          fit: BoxFit.cover,
+                        )),
+                    Positioned(
+                      bottom: 20,
+                      child: Container(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  suffixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  labelText: 'search'.tr(),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ProfileScreen())),
-                                  icon: Icon(
-                                    Icons.person,
-                                    color: AppColor.SECONDARY,
-                                  ))),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                    onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileScreen())),
+                                    icon: Icon(
+                                      Icons.person,
+                                      color: AppColor.SECONDARY,
+                                    ))),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              Padding(
+
+                /*  Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(height:250,child: Chewie(controller: chewieController)),
-              ),
-              FutureBuilder<List<Parent>>(
+                child:  ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.asset("images/cover.jpg",fit: BoxFit.cover,)),
+              ),*/
+                /*  FutureBuilder<List<Parent>>(
                 future: BackendQueries.getAllParents(),
                   builder: (context, snapshot) => snapshot.hasData && snapshot.connectionState == ConnectionState.done?
                   Center(
                     child: ListView.builder(itemCount: snapshot.data!.length,shrinkWrap:true,physics: const NeverScrollableScrollPhysics(),itemBuilder: (context, index) =>
                           CategoryWidget(title: snapshot.data![index].parentName)),
-                  ): Center(child: CircularProgressIndicator(),),
+                  ): Center(child: CircularProgressIndicator(),),*/
 
-              ),
-            ]),
+                // ),
+              ]);
+            },
+            childCount: 1,
+          ),
         ),
-
-      ),
+        SliverList(
+        delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails(title: imagesName[index]))),
+              child: Column(children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                        "images/${imagesName[index]}.jpg")),
+                Text("${imagesName[index]}"),
+              ]),
+            ),
+          );
+        },childCount: imagesName.length
+          ))
+      ]),
     );
   }
 }

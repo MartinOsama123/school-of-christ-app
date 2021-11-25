@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kdeccourse/AppColor.dart';
-import 'package:kdeccourse/BackendQueries.dart';
+import 'package:kdeccourse/app_colors.dart';
+import 'package:kdeccourse/backend_requests.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'models/CourseInfo.dart';
+import 'models/course_model.dart';
 
 class EpisodeDetail extends StatelessWidget {
   final String name;

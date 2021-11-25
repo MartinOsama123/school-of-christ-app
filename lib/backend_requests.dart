@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:kdeccourse/models/Category.dart';
-import 'package:kdeccourse/models/CourseInfo.dart';
-import 'package:kdeccourse/models/Parent.dart';
+import 'package:kdeccourse/models/category_model.dart';
+import 'package:kdeccourse/models/course_model.dart';
+import 'package:kdeccourse/models/parent_model.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 
 class BackendQueries {

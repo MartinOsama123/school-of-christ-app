@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kdeccourse/BackendQueries.dart';
-import 'package:kdeccourse/CourseDetail.dart';
-import 'package:kdeccourse/models/Category.dart';
+import 'package:kdeccourse/backend_requests.dart';
+import 'package:kdeccourse/course_detail.dart';
+import 'package:kdeccourse/models/category_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import 'AppColor.dart';
+import 'app_colors.dart';
 
 class CategoryWidget extends StatelessWidget {
   final String title;
@@ -14,22 +14,10 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Category>>(
       future: BackendQueries.getAllCategories(title),
-      builder: (context, snapshot) => snapshot.hasData && snapshot.data!.isNotEmpty && snapshot.connectionState == ConnectionState.done ? Container(
-        height: 250,
-        child: Column(children: [
-           Row(
-             children: [
-               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(title,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 24),),
-                ),
-             ],
-           ),
-          Expanded(
-            child: ListView.builder(itemBuilder: (context, index) => Column(
+      builder: (context, snapshot) => snapshot.hasData && snapshot.data!.isNotEmpty && snapshot.connectionState == ConnectionState.done ?
+      ListView.builder(itemBuilder: (context, index) => Column(
                   children: [
-                    Expanded(
-                      child: GestureDetector(
+                      GestureDetector(
                         onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => CourseDetail(category: snapshot.data![index],))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -40,7 +28,7 @@ class CategoryWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
+
                    Text(snapshot.data![index].categoryName.trim())
                    /* Positioned(
                       left: 0,
@@ -55,11 +43,7 @@ class CategoryWidget extends StatelessWidget {
                       ),
                     ),*/
                   ],
-                ),scrollDirection: Axis.horizontal,itemCount: snapshot.data!.length,shrinkWrap: true,),
-
-
-          )]),
-      ): Container(),
+                ),scrollDirection: Axis.vertical,itemCount: snapshot.data!.length,shrinkWrap: true,) : Container(),
     );
   }
 

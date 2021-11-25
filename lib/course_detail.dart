@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kdeccourse/AppColor.dart';
-import 'package:kdeccourse/BackendQueries.dart';
-import 'package:kdeccourse/EpisodeDetails.dart';
-import 'package:kdeccourse/models/Category.dart';
+import 'package:kdeccourse/app_colors.dart';
+import 'package:kdeccourse/backend_requests.dart';
+import 'package:kdeccourse/episode_detail.dart';
+import 'package:kdeccourse/models/category_model.dart';
 import 'dart:math' as math;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kdeccourse/models/CourseInfo.dart';
+import 'package:kdeccourse/models/course_model.dart';
 
 class CourseDetail extends StatelessWidget {
   final Category category;
