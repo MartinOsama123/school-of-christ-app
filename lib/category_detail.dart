@@ -18,7 +18,6 @@ class CategoryDetails extends StatelessWidget {
         centerTitle: true,
         toolbarHeight:50,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: AppColor.PRIMARY),
         backgroundColor: AppColor.PRIMARY,
         automaticallyImplyLeading: true,
       ),
@@ -45,7 +44,7 @@ class CategoryDetails extends StatelessWidget {
               ],
             );
           }
-    ) ) : CircularProgressIndicator(),
+    ) ) : !snapshot.hasData && snapshot.connectionState == ConnectionState.done ?  Center(child: Text("غير متاح الان")): Center(child: CircularProgressIndicator()),
       ),
     );
   }

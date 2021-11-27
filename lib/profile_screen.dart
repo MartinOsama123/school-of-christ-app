@@ -1,17 +1,21 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kdeccourse/app_colors.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/src/provider.dart';
+
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   List<String> dummy  = ["التلمذه","شخصية الله", "سلطان الله","الإنسان","الروح القدس","الإختبار المسيحي للنصرة"];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return context.watch<User?>() != null ? Scaffold(
 appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios),color: Colors.black,onPressed: ()=>Navigator.pop(context)),backgroundColor: Colors.transparent,elevation: 0,toolbarHeight: 30,),
-      body: SafeArea(
+      body:  SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(26),
           child: SingleChildScrollView(
@@ -62,7 +66,7 @@ appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios),color: Color
           ),
         ),
       ),
-    );
+    ): LoginScreen();
   }
 
 }
